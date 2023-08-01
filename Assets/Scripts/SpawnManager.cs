@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     private int boxL, boxW;
-    [SerializeField] private GameObject playerBox;
+    [SerializeField] private GameObject playerBox, goal;
     [SerializeField] private GameObject wallPrefab, beadPrefab;
     private const int numBeads = 20;
     public static List<GameObject> beadPool = new(numBeads);
@@ -17,6 +17,7 @@ public class SpawnManager : MonoBehaviour
         boxL = Random.Range(7, 13);
         boxW = Random.Range(7, 13);
         Vector3 scale = playerBox.transform.localScale;
+        playerBox.transform.parent = transform;
         playerBox.transform.localScale = new Vector3(scale.x * boxL, scale.y, scale.z * boxW);
         // Generate beads
         beadRadius = beadPrefab.GetComponent<SphereCollider>().radius;
@@ -27,6 +28,9 @@ public class SpawnManager : MonoBehaviour
             tempBead.transform.parent = transform;
             beadPool.Add(tempBead);
         }
+        // Generate goal
+        goal.transform.parent = transform;
+        goal.transform.position = new Vector3((Random.Range(-boxL, boxL) + 1) / 2f, 0.01f, (Random.Range(-boxW, boxW) + 1) / 2f);
     }
 
     // Update is called once per frame

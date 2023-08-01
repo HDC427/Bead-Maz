@@ -27,8 +27,6 @@ public class PlayerBox : MonoBehaviour
         {
             float horizontalMouseMove = Input.GetAxis("Mouse X");
             float verticalMouseMove = Input.GetAxis("Mouse Y");
-            transform.Rotate(Vector3.right, horizontalMouseMove);
-            transform.Rotate(Vector3.forward, verticalMouseMove);
             // Make sure the origin's position is (0, 0, 0)
             origin.transform.Rotate(Vector3.right, horizontalMouseMove);
             origin.transform.Rotate(Vector3.forward, verticalMouseMove);

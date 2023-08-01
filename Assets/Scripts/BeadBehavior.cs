@@ -10,18 +10,18 @@ public class BeadBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < numBeads; i++)
-        {
-            GameObject tempBead = Instantiate(beadPrefab);
-            tempBead.SetActive(false);
-            tempBead.transform.SetParent(playerBoard.transform);
-            beadPool.Add(tempBead);
-        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        gameObject.SetActive(false);
+
     }
 }

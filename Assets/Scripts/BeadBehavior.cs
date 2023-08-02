@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class BeadBehavior : MonoBehaviour
 {
-    private const int numBeads = 20;
-    public static List<GameObject> beadPool = new(numBeads);
-    [SerializeField] private GameObject playerBoard, beadPrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +19,6 @@ public class BeadBehavior : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         gameObject.SetActive(false);
-
+        GameManager.theGM.UpdateCount(-1);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    public static SpawnManager theSM;
     private int boxL, boxW;
     [SerializeField] private GameObject playerBox, goal;
     [SerializeField] private GameObject wallPrefab, beadPrefab;
@@ -15,11 +16,39 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        theSM = this;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    public void GameStart()
+    {
+        playerBox.SetActive(true);
+        goal.SetActive(true);
+        InitializeBox();
+        GenerateBeads();
+        GenerateWalls(wallPrefab, boxL, boxW, transform);
+    }
+
+    void InitializeBox()
+    {
         // Initialize the box with random length and width
         boxL = Random.Range(7, 13);
         boxW = Random.Range(7, 13);
+        playerBox.SetActive(true);
         playerBox.transform.parent = transform;
         playerBox.transform.localScale = new Vector3(boxL, playerBox.transform.localScale.y, boxW);
+        // Generate goal
+        goal.transform.parent = transform;
+        goal.transform.position = new Vector3(-boxL / 2f + 0.5f + Random.Range(1, boxL), 0.01f, -boxW / 2f + 0.5f + Random.Range(1, boxW));
+    }
+
+    void GenerateBeads()
+    {
         // Generate beads
         beadRadius = beadPrefab.GetComponent<SphereCollider>().radius;
         numBeadsTotal = Random.Range(1, numBeadsBuffer + 1);
@@ -35,21 +64,12 @@ public class SpawnManager : MonoBehaviour
             tempBead.transform.parent = transform;
             beadPool.Add(tempBead);
         }
-        // Generate goal
-        goal.transform.parent = transform;
-        goal.transform.position = new Vector3(-boxL / 2f + 0.5f + Random.Range(1, boxL), 0.01f, -boxW / 2f + 0.5f + Random.Range(1, boxW));
-        // Generate walls
-        GenerateWalls(wallPrefab, boxL, boxW, transform);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     void GenerateWalls(GameObject wall, int L, int W, Transform parent)
     {
+        // Generate walls to form a maze
         float unit = wall.GetComponent<BoxCollider>().size.x;
         float height = wall.GetComponent<BoxCollider>().size.y / 4;
         // Generate full walls
